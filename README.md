@@ -11,9 +11,20 @@
 -If you play a card whose number is 7, then in this case you have the right to change the type of card as you wish.
 -The winner of the game is the one who no longer has a card in their possession.
 ```
+
 ## **DevOps part**
-- In the DevOps part I create a CI/CD pipelines using GitHub actions for building and testing the game backend and also trigger other pipeline the [Ronda-deploy]()
+- In the DevOps part I create a CI/CD pipelines using GitHub actions for building, testing and pushing the backend docker image to [DockerH ub]() the game backend and also trigger other pipeline in the [Ronda-deploy](https://github.com/ozennou/Ronda-deploy) repository that deploy the backend in AKS cluster:
 
 <img src="./images/ronda.drawio.png">
-<!-- <img src="./images/ronda.drawio.png" > -->
-<!-- <img src="./images/ronda1.jpeg" width="900"> -->
+
+## **Backend part**
+- In this part I work using django websockets to create a real time game, when a player want to start a game fistly get connected to the matchmaking websocket that use a queue to create a game between two players and redirect them to the new game websocket uri when the game logic started:
+
+<img src="./images/img1.png"><br/>
+<br/>
+<img src="./images/img2.png"><br/>
+<br/>
+<img src="./images/img3.png"><br/>
+<br/>
+<img src="./images/img4.png"><br/>
+<br/>
