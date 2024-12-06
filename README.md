@@ -1,3 +1,4 @@
+[![CI Workflow](https://github.com/ozennou/Ronda-dev/actions/workflows/workflow.yml/badge.svg)](https://github.com/ozennou/Ronda-dev/actions/workflows/workflow.yml)
 # **RONDA Dev Repository**
 ## Overview
 - Ronda Dev is a repository of the code base backend of Moroccan ronda game with the following rules : 
