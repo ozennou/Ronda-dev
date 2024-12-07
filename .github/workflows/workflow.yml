@@ -3,10 +3,10 @@ name: CI Workflow
 on:
     push:
         branches: [ "main" ]
-        # paths: ["**/*.py"]
+        paths: ["src/**/*.py", "src/Requirements.txt", "src/script.sh", "docker-compose.yml"]
     pull_request:
         branches: [ "main" ]
-        # paths: ["**/*.py"]
+        paths: ["src/**/*.py", "src/Requirements.txt", "src/script.sh", "docker-compose.yml"]
 
 jobs:
 
