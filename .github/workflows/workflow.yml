@@ -19,11 +19,16 @@ jobs:
               with:
                 username: ${{ vars.DOCKERHUB_USERNAME }}
                 password: ${{ secrets.DOCKERHUB_TOKEN }}
+            - name: Create .env file
+              run: |
+                  cat << EOF > .env
+                  POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+                  POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+                  REDIS_PASSWD=${{ secrets.REDIS_PASSWD }}
+                  EOF
             - name: Build
               run: |
                 docker compose build
-                echo ${{ secrets.ENVS }} > .env
-                cat .env
             - name: Run
               run: |
                 docker compose up -d
