@@ -15,4 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: cd src && docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: |
+        echo hello
+        ls -la
+        sleep 5
