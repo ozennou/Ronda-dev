@@ -19,12 +19,13 @@ jobs:
               with:
                 username: ${{ vars.DOCKERHUB_USERNAME }}
                 password: ${{ secrets.DOCKERHUB_TOKEN }}
-            - name: Building
+            - name: Build
               run: |
-                echo hello
-                docker login
-                echo ${{ vars.DOCKERHUB_USERNAME }}
-                echo ${{ secrets.DOCKERHUB_TOKEN }}
-                sleep 5
-            - name: test
-              run: docker info
+                docker compose build
+                echo ${{ secrets.ENVS }} > .env
+            - name: Run
+              run: |
+                ls -la .env
+                docker compose up -d
+                docker ps
+
