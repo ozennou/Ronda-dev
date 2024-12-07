@@ -27,6 +27,8 @@ jobs:
               run: |
                 docker compose up -d
                 docker ps
+            - name: health check 
+              run: curl --fail http://localhost:8000/healthz
 
     test:
         runs-on: ubuntu-24.04
