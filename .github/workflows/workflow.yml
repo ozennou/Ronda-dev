@@ -30,7 +30,7 @@ jobs:
 
     test:
         runs-on: ubuntu-latest
-        continue-on-error: true
+        needs: build
         strategy:
             # max-parallel: 3
             matrix:
@@ -50,7 +50,8 @@ jobs:
               run: python src/manage.py test
 
     push_image:
-        runs-on: ubuntu-latest
+        runs-on: test
+        needs: build
         steps:
             - uses: actions/checkout@v4
             - name: Login to DockerHub
@@ -64,4 +65,4 @@ jobs:
               run: |
                 docker push ozennou/ronda_game:latest
                 docker tag ozennou/ronda_game:latest ozennou/ronda_game:${GITHUB_RUN_NUMBER}v
-                docker push ozennou/ronda_game:${GITHUB_RUN_NUMBER}v
+                docker push ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
