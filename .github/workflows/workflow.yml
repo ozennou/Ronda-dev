@@ -3,10 +3,10 @@ name: CI Workflow
 on:
     push:
         branches: [ "main" ]
-        paths: ["src/**/*.py", "src/Requirements.txt", "src/script.sh", "docker-compose.yml"]
+        # paths: ["src/**/*.py", "src/Requirements.txt", "src/script.sh", "docker-compose.yml"]
     pull_request:
         branches: [ "main" ]
-        paths: ["src/**/*.py", "src/Requirements.txt", "src/script.sh", "docker-compose.yml"]
+        # paths: ["src/**/*.py", "src/Requirements.txt", "src/script.sh", "docker-compose.yml"]
 
 jobs:
 
@@ -28,7 +28,9 @@ jobs:
                 docker compose up -d
                 docker ps
             - name: health check 
-              run: curl --fail http://localhost:8000/healthz
+              run: |
+                sleep 10
+                curl --fail http://localhost:8000/healthz
 
     test:
         runs-on: ubuntu-24.04
