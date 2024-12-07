@@ -12,7 +12,7 @@ jobs:
 
     build:
 
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
 
         steps:
             - uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
                 docker ps
 
     test:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: build
         strategy:
             # max-parallel: 3
@@ -50,7 +50,7 @@ jobs:
               run: python src/manage.py test
 
     push_image:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         needs: test
         steps:
             - uses: actions/checkout@v4
@@ -64,5 +64,5 @@ jobs:
             - name: push docker image
               run: |
                 docker push ozennou/ronda_game:latest
-                docker tag ozennou/ronda_game:latest ozennou/ronda_game:${GITHUB_RUN_NUMBER}v
+                docker tag ozennou/ronda_game:latest ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
                 docker push ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
