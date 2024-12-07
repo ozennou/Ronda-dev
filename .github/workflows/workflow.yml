@@ -2,22 +2,22 @@ name: CI Workflow
 
 on:
     push:
-        branches:
-            - main
+        branches: [ "main" ]
     pull_request:
-        branches:
-            - main
+        branches: [ "main" ]
 
 jobs:
+
     build:
-        runs-on: ubuntu/latest
+
+        runs-on: ubuntu-latest
+
         steps:
-            - name: test-step
+            - name: test
+              run: ls -la
+            - uses: actions/checkout@v4
+            - name: Building
               run: |
+                echo hello
                 ls -la
-                echo 'hello world'
                 sleep 5
-
-                name: Docker Image CI
-
-                
