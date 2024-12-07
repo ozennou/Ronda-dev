@@ -1,5 +1,7 @@
 FROM python:3.9.21-slim-bullseye
 
+RUN apt-get update && apt-get install libpq-dev gcc -y
+
 COPY . /app
 
 WORKDIR /app

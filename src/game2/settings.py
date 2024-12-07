@@ -37,6 +37,7 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             "hosts": [f"redis://:{os.getenv('REDIS_PASSWD', '')}@redis-svc:6379/0"],
+            # "hosts": ["redis://@127.0.0.1:6379"],
         },
     },
 }
@@ -46,6 +47,7 @@ CHANNEL_LAYERS = {
 INSTALLED_APPS = [
     'daphne',
     'app',
+    'health_check',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

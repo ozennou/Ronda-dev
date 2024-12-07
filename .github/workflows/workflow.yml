@@ -63,6 +63,6 @@ jobs:
               run: docker compose build
             - name: push docker image
               run: |
-                docker push ozennou/ronda_game:latest
                 docker tag ozennou/ronda_game:latest ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
                 docker push ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
+                docker push ozennou/ronda_game:latest
