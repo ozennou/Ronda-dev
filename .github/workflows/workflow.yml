@@ -30,9 +30,9 @@ jobs:
         runs-on: ubuntu-latest
         continue-on-error: true
         strategy:
-            max-parallel: 3
+            # max-parallel: 3
             matrix:
-              python-version: [3.7, 3.8, 3.9]
+              python-version: [3.9]
         steps:
             - uses: actions/checkout@v4
             - name: Set up python ${{ matrix.python-version }}
@@ -45,7 +45,7 @@ jobs:
                 python -m pip install --upgrade pip
                 pip install -r Requirements.txt
             - name: Run tests
-              run: python manage.py test
+              run: python .src/manage.py test
 
     # push_image:
     #     runs-on: ubuntu-latest
