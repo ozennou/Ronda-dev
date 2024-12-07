@@ -10,7 +10,7 @@ volumes:
 services:
   app:
     build: ./src
-    image: ozennou/ronga_game:latest
+    image: ozennou/ronda_game:latest
     container_name: app
     ports:
       - 8000:8000
