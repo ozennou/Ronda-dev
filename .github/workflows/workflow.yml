@@ -45,7 +45,7 @@ jobs:
                 python -m pip install --upgrade pip
                 pip install -r Requirements.txt
             - name: Run tests
-              run: python .src/manage.py test
+              run: python src/manage.py test
 
     # push_image:
     #     runs-on: ubuntu-latest
