@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 python3 manage.py makemigrations app
 
 python3 manage.py makemigrations
