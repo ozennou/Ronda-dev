@@ -34,6 +34,9 @@ jobs:
             - name: Health check
               run: |
                 sleep 10
+                docker logs app
+                echo ----------
+                docker logs database
                 curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null
             
               
