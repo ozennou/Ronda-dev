@@ -32,12 +32,14 @@ jobs:
               run: |
                 i=0
                 while [ $i -lt 10 ]; do
-                    curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null && { break; } || true
+                    curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null && { echo "Health check successful!"; break; }
+                    echo "Health check failed with status $?"
                     sleep 5
                     ((i++))  # Increment the counter
                     echo $i  # Print the counter value
                 done
                 curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null
+            
               
     test:
         runs-on: ubuntu-24.04
