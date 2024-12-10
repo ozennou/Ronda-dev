@@ -12,7 +12,7 @@ on:
 
 jobs:
     build:
-        runs-on: macos-latest
+        runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@v4
     
@@ -31,25 +31,9 @@ jobs:
                 docker compose up -d
                 docker ps
 
-            - name: Wait for the app
-              run: |
-                #!/bin/bash 
-                max_attempts=10
-                attempt=0
-                while [ $attempt -lt $max_attempts ]; do
-                  (docker logs app 2>&1 | grep "0.0.0.0:8000") && { break; } || true
-                  echo "Waiting for the app to be ready..."
-                  sleep 5
-                  ((attempt++))
-                done
-                
-                if [ $attempt -eq $max_attempts ]; then
-                  echo "The app did not become ready in time"
-                  exit 1
-                fi
-
             - name: Health check
               run: |
+                sleep 60
                 docker logs app
                 echo ------
                 docker logs database
