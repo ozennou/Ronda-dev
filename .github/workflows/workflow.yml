@@ -30,8 +30,15 @@ jobs:
                 docker ps
             - name: health check 
               run: |
-                sleep 15
+                i=0
+                while [ $i -lt 10 ]; do
+                    curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null || true
+                    sleep 5
+                    ((i++))  # Increment the counter
+                    echo $i  # Print the counter value
+                done
                 curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null
+              
     test:
         runs-on: ubuntu-24.04
         needs: build
