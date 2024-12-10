@@ -79,7 +79,8 @@ jobs:
                 password: ${{ secrets.DOCKERHUB_TOKEN }}
 
             - name: Build
-              run: docker compose build
+              run: |
+                docker build --no-cache --platform linux/amd64 ./src -t ozennou/ronda_game:latest
 
             - name: push docker image
               run: |
