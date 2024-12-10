@@ -30,7 +30,7 @@ jobs:
                 docker ps
             - name: health check 
               run: |
-                sleep 10
+                sleep 15
                 curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null
     test:
         runs-on: ubuntu-24.04
