@@ -31,11 +31,18 @@ jobs:
                 docker compose up -d
                 docker ps
       
+            - name: Wait for the database
+              run: |
+                while true
+                do
+                (docker logs database | grep "database systm is ready to accept connections" 1>&2 2>/dev/null ) && { break ; }
+                echo Waiting the database
+                sleep 5
+                done
+
             - name: Health check
               run: |
-                sleep 20 
-                docker logs app
-                curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null || true
+                curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null
             
               
     test:
