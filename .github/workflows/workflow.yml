@@ -11,123 +11,93 @@ on:
     workflow_dispatch:
 
 jobs:
-    # build:
-    #     runs-on: ubuntu-24.04
-    #     steps:
-    #         - uses: actions/checkout@v4
+    build:
+        runs-on: ubuntu-24.04
+        steps:
+            - uses: actions/checkout@v4
     
-    #         - name: Create .env file
-    #           run: |
-    #               cat << EOF > .env
-    #               POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-    #               POSTGRES_PASSWD=${{ secrets.POSTGRES_PASSWORD }}
-    #               REDIS_PASSWD=${{ secrets.REDIS_PASSWD }}
-    #               POSTGRES_HOST=${{ vars.POSTGRES_HOST }}
-    #               POSTGRES_DB=${{ vars.POSTGRES_DB }}
-    #               EOF
+            - name: Create .env file
+              run: |
+                  cat << EOF > .env
+                  POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+                  POSTGRES_PASSWD=${{ secrets.POSTGRES_PASSWORD }}
+                  REDIS_PASSWD=${{ secrets.REDIS_PASSWD }}
+                  POSTGRES_HOST=${{ vars.POSTGRES_HOST }}
+                  POSTGRES_DB=${{ vars.POSTGRES_DB }}
+                  EOF
         
-    #         - name: Build and Run
-    #           run: |
-    #             docker compose up -d
-    #             docker ps
+            - name: Build and Run
+              run: |
+                docker compose up -d
+                docker ps
 
-    #         - name: Health check
-    #           run: |
-    #             sleep 30
-    #             docker ps
-    #             docker logs app
-    #             echo ------
-    #             docker logs database
-    #             curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null
+            - name: Health check
+              run: |
+                sleep 30
+                docker ps
+                docker logs app
+                echo ------
+                docker logs database
+                curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null
             
               
-    # test:
-    #     runs-on: ubuntu-24.04
-    #     needs: build
-    #     strategy:
-    #         # max-parallel: 3
-    #         matrix:
-    #           python-version: [3.9]
-    #     steps:
-    #         - uses: actions/checkout@v4
+    test:
+        runs-on: ubuntu-24.04
+        needs: build
+        strategy:
+            # max-parallel: 3
+            matrix:
+              python-version: [3.9]
+        steps:
+            - uses: actions/checkout@v4
     
-    #         - name: Set up python ${{ matrix.python-version }}
-    #           uses: actions/setup-python@v3
-    #           with:
-    #             python-version: ${{ matrix.python-version }}
+            - name: Set up python ${{ matrix.python-version }}
+              uses: actions/setup-python@v3
+              with:
+                python-version: ${{ matrix.python-version }}
 
-    #         - name: Install dependencies
-    #           run: |
-    #             cd src
-    #             python -m pip install --upgrade pip
-    #             pip install -r Requirements.txt
+            - name: Install dependencies
+              run: |
+                cd src
+                python -m pip install --upgrade pip
+                pip install -r Requirements.txt
 
-    #         - name: Run tests
-    #           run: python src/manage.py test
+            - name: Run tests
+              run: python src/manage.py test
 
-    # push_image:
-    #     runs-on: ubuntu-24.04
-    #     needs: test
-    #     if: github.event_name == 'push'
-    #     steps:
-    #         - uses: actions/checkout@v4
+    push_image:
+        runs-on: ubuntu-24.04
+        needs: test
+        if: github.event_name == 'push'
+        steps:
+            - uses: actions/checkout@v4
 
-    #         - name: Login to DockerHub
-    #           uses: docker/login-action@v3
-    #           with:
-    #             username: ${{ vars.DOCKERHUB_USERNAME }}
-    #             password: ${{ secrets.DOCKERHUB_TOKEN }}
+            - name: Login to DockerHub
+              uses: docker/login-action@v3
+              with:
+                username: ${{ vars.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    #         - name: Build
-    #           run: docker compose build
+            - name: Build
+              run: docker compose build
 
-    #         - name: push docker image
-    #           run: |
-    #             docker tag ozennou/ronda_game:latest ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
-    #             docker push ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
-    #             docker push ozennou/ronda_game:latest
+            - name: push docker image
+              run: |
+                docker tag ozennou/ronda_game:latest ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
+                docker push ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
+                docker push ozennou/ronda_game:latest
+                      
 
     deployment:
         runs-on: ubuntu-24.04
-        # needs: push_image
+        needs: push_image
         steps:
-            - name: Workflow Dispatcher
-              # You may pin to the exact commit or the version.
-              # uses: adityakar/workflow-dispatcher@a0f690a2262373956eaee3ef74a01f5afed4ec7c
-              uses: adityakar/workflow-dispatcher@v1.0
-              with:
-                # Owner of the GitHub repo
-                owner: ozennou
-                # Name of the GitHub repo
-                repo: Ronda-deploy
-                # Access token (PAT) for the repo
-                token: ${{ secrets.G_TOKEN }}
-                # The event type of the repository dispatch
-                event_type: workflow_dispatch
-                # Payload for the repository dispatch event
-                # client_payload: # optional, default is {}
-                # # How long to wait between polls (seconds)
-                # wait_time: # optional, default is 10
-                # # Maximum amount of time to wait for workflow (seconds)
-                # max_time: # optional, default is 600
-          
-                      
-
-    deployment2:
-        runs-on: ubuntu-24.04
-        # needs: push_image
-        steps:
-            - name: Workflow Dispatch
-              # You may pin to the exact commit or the version.
-              # uses: benc-uk/workflow-dispatch@25b02cc069be46d637e8fe2f1e8484008e9e9609
+            - name: Trigger CD pipeline in ozennou/Ronda-deploy repo
               uses: benc-uk/workflow-dispatch@v1.2.3
               with:
-                # Name, filename or ID of workflow to run
                 workflow: CD.yml
-                # GitHub token with repo write access, only required if the workflow is in a different repository
                 token:  ${{ secrets.G_TOKEN }}
                 ref: main
-                # Repo owner & name, slash separated, only set if invoking a workflow in a different repo
                 repo: ozennou/Ronda-deploy
           
 
