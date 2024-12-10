@@ -33,7 +33,7 @@ jobs:
 
             - name: Health check
               run: |
-                sleep 60
+                sleep 30
                 docker ps
                 docker logs app
                 echo ------
