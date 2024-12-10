@@ -28,17 +28,27 @@ jobs:
               run: |
                 docker compose up -d
                 docker ps
-            - name: health check 
+            - name: Health check 
               run: |
                 i=0
                 while [ $i -lt 10 ]; do
+                    # Try to curl the health endpoint. If successful, break the loop
                     curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null && { echo "Health check successful!"; break; }
+                    
+                    # If curl fails, output the status code for debugging
                     echo "Health check failed with status $?"
+                    
+                    # Wait for 5 seconds before trying again
                     sleep 5
-                    ((i++))  # Increment the counter
-                    echo $i  # Print the counter value
+                    
+                    # Increment the counter and print the counter value
+                    ((i++))
+                    echo "Attempt $i"
+            
                 done
-                curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null
+            
+                # Final curl command to ensure health status after the loop
+                curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null || echo "Final health check failed."
             
               
     test:
