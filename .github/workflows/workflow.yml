@@ -91,25 +91,26 @@ jobs:
         runs-on: ubuntu-24.04
         # needs: push_image
         steps:
-            - name: Workflow Dispatch and wait
+            - name: Workflow Dispatcher
               # You may pin to the exact commit or the version.
-              # uses: the-actions-org/workflow-dispatch@93e95b157d791ae7f42aef8f8a0d3d723eba1c31
-              uses: the-actions-org/workflow-dispatch@v2.1.1
+              # uses: adityakar/workflow-dispatcher@a0f690a2262373956eaee3ef74a01f5afed4ec7c
+              uses: adityakar/workflow-dispatcher@v1.0
               with:
-                # Name or ID of workflow to run
-                workflow: CD.yml
-                # GitHub token with repo write access, can NOT use secrets.GITHUB_TOKEN, see readme
-                token: ${{ secrets.G_TOKEN}}
-                # Inputs to pass to the workflow, must be a JSON string. All values must be strings (even if used as boolean or number)
-                ref: ozennou/Ronda-deploy/
-                # Repo owner & name, slash separated, only set if invoking a workflow in a different repo
-                repo: main
-                # Get the URL of the triggered workflow and display it in logs (useful to follow the progress of the triggered workflow)
-                display-workflow-run-url: true
-                # The time to wait (+unit) between two polls to get the URL of the workflow run
-                wait-for-completion: true
-                # Maximum amount of time (+unit) to wait to mark workflow as timed out
-                wait-for-completion-timeout: 1m
+                # Owner of the GitHub repo
+                owner: ozennou
+                # Name of the GitHub repo
+                repo: Ronda-deploy
+                # Access token (PAT) for the repo
+                token: ${{ secrets.G_TOKEN }}
+                # The event type of the repository dispatch
+                event_type: workflow_dispatch
+                # Payload for the repository dispatch event
+                # client_payload: # optional, default is {}
+                # # How long to wait between polls (seconds)
+                # wait_time: # optional, default is 10
+                # # Maximum amount of time to wait for workflow (seconds)
+                # max_time: # optional, default is 600
+          
                       
 
     deployment2:
@@ -124,10 +125,7 @@ jobs:
                 # Name, filename or ID of workflow to run
                 workflow: CD.yml
                 # GitHub token with repo write access, only required if the workflow is in a different repository
-                token:  ${{ github.token }}
-                # Inputs to pass to the workflow, must be a JSON string
-                # inputs: # optional
-                # The reference can be a branch, tag, or a commit SHA
+                token:  ${{ secrets.G_TOKEN }}
                 ref: main
                 # Repo owner & name, slash separated, only set if invoking a workflow in a different repo
                 repo: ozennou/Ronda-deploy
