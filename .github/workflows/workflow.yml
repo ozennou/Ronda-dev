@@ -33,7 +33,7 @@ jobs:
 
             - name: Health check
               run: |
-                Wait for the app initialization
+                echo Wait for the app initialization
                 sleep 20
                 curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null
             
