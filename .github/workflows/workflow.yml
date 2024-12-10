@@ -35,6 +35,9 @@ jobs:
               run: |
                 echo Wait for the app initialization
                 sleep 20
+                docker logs app
+                echo ------
+                docker logs database
                 curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null
             
               
