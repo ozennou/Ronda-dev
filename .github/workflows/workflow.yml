@@ -36,7 +36,7 @@ jobs:
                 max_attempts=10
                 attempt=0
                 while [ $attempt -lt $max_attempts ]; do
-                  pg_isready -h database -p 5432 && break
+                  pg_isready -h database -p 5432 && break || true
                   echo "Waiting for PostgreSQL to be ready..."
                   sleep 5
                   ((attempt++))
