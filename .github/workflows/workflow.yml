@@ -99,7 +99,7 @@ jobs:
                 # Name or ID of workflow to run
                 workflow: CD.yml
                 # GitHub token with repo write access, can NOT use secrets.GITHUB_TOKEN, see readme
-                token: ${{ secret.G_TOKEN}}
+                token: ${{ secrets.G_TOKEN}}
                 # Inputs to pass to the workflow, must be a JSON string. All values must be strings (even if used as boolean or number)
                 ref: ozennou/Ronda-deploy/
                 # Repo owner & name, slash separated, only set if invoking a workflow in a different repo
