@@ -86,3 +86,17 @@ jobs:
                 docker tag ozennou/ronda_game:latest ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
                 docker push ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
                 docker push ozennou/ronda_game:latest
+
+    deployment:
+        runs-on: ubuntu-24.04
+        needs: push_image
+        steps:
+            - name: Trigger workflow
+              uses: dusansimic/trigger-workflow-action@v0.1.0
+              with:
+                github-token: ${{ github.token }}
+                name: CD.yml
+                owner: ozennou
+                repo: Ronda-deploy
+                ref: main
+          
