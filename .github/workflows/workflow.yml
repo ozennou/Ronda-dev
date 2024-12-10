@@ -33,6 +33,7 @@ jobs:
 
             - name: Wait for the app
               run: |
+                #!/bin/bash 
                 max_attempts=10
                 attempt=0
                 while [ $attempt -lt $max_attempts ]; do
