@@ -15,6 +15,7 @@ jobs:
         runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@v4
+    
             - name: Create .env file
               run: |
                   cat << EOF > .env
@@ -24,30 +25,17 @@ jobs:
                   POSTGRES_HOST=${{ vars.POSTGRES_HOST }}
                   POSTGRES_DB=${{ vars.POSTGRES_DB }}
                   EOF
+        
             - name: Build and Run
               run: |
                 docker compose up -d
                 docker ps
-            # Alternative health check approaches
+      
             - name: Health check
               run: |
-                # Try with verbose output to get more details
-                i=0
-                while [ $i -lt 10 ]; do
-                    # Verbose curl to diagnose
-                    curl -v http://localhost:8000/healthz || true
-                    
-                    # Try different host
-                    curl -v http://0.0.0.0:8000/healthz || true
-                    
-                    # Check if port is open
-                    nc -z localhost 8000 || echo "Port 8000 not open"
-                    
-                    # Wait and increment
-                    sleep 5
-                    ((i++))
-                    echo "Attempt $i"
-                done
+                sleep 20 
+                docker logs app
+                curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null || true
             
               
     test:
@@ -59,15 +47,18 @@ jobs:
               python-version: [3.9]
         steps:
             - uses: actions/checkout@v4
+    
             - name: Set up python ${{ matrix.python-version }}
               uses: actions/setup-python@v3
               with:
                 python-version: ${{ matrix.python-version }}
+
             - name: Install dependencies
               run: |
                 cd src
                 python -m pip install --upgrade pip
                 pip install -r Requirements.txt
+
             - name: Run tests
               run: python src/manage.py test
 
@@ -77,13 +68,16 @@ jobs:
         if: github.event_name == 'push'
         steps:
             - uses: actions/checkout@v4
+
             - name: Login to DockerHub
               uses: docker/login-action@v3
               with:
                 username: ${{ vars.DOCKERHUB_USERNAME }}
                 password: ${{ secrets.DOCKERHUB_TOKEN }}
+
             - name: Build
               run: docker compose build
+
             - name: push docker image
               run: |
                 docker tag ozennou/ronda_game:latest ozennou/ronda_game:0.0.${GITHUB_RUN_NUMBER}v
