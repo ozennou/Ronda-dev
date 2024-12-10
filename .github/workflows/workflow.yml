@@ -97,6 +97,42 @@ jobs:
                 github-token: ${{ github.token }}
                 name: CD.yml
                 owner: ozennou
-                repo: Ronda-deploy
+                repo: Ronda-deplo
                 ref: main
+
+    deployment2:
+        runs-on: ubuntu-24.04
+        needs: push_image
+        steps:
+            - name: Workflow Dispatch Plus
+              # You may pin to the exact commit or the version.
+              # uses: pauldraper/workflow-dispatch@e654f7d9b7cdb02a6a3bb2a6d288b54e507075e0
+              uses: pauldraper/workflow-dispatch@v1.5
+              with:
+                # JSON object of inputs
+                inputs: # optional, default is {}
+                # Name of input for this workflow's URL
+                marker-input: # optional
+                # Repository owner and name
+                repo: Ronda-deploy
+                # Ref
+                ref: main
+                # Personal access token, see https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
+                token: ${{ secrets.GITHUB_TOKEN }}
+                # Whether to wait for
+                wait: true
+                # Workflow file path
+                workflow: CD.yml
           
+
+
+
+
+
+
+
+
+
+
+
+        
