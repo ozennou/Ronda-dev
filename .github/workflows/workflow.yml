@@ -91,14 +91,26 @@ jobs:
         runs-on: ubuntu-24.04
         # needs: push_image
         steps:
-            - name: Trigger workflow
-              uses: dusansimic/trigger-workflow-action@v0.1.0
+            - name: Workflow Dispatch and wait
+              # You may pin to the exact commit or the version.
+              # uses: the-actions-org/workflow-dispatch@93e95b157d791ae7f42aef8f8a0d3d723eba1c31
+              uses: the-actions-org/workflow-dispatch@v2.1.1
               with:
-                github-token: ${{ github.token }}
-                name: CD.yml
-                owner: ozennou
-                repo: Ronda-deplo
-                ref: main
+                # Name or ID of workflow to run
+                workflow: CD.yml
+                # GitHub token with repo write access, can NOT use secrets.GITHUB_TOKEN, see readme
+                token: ${{ secret.G_TOKEN}}
+                # Inputs to pass to the workflow, must be a JSON string. All values must be strings (even if used as boolean or number)
+                ref: ozennou/Ronda-deploy/
+                # Repo owner & name, slash separated, only set if invoking a workflow in a different repo
+                repo: main
+                # Get the URL of the triggered workflow and display it in logs (useful to follow the progress of the triggered workflow)
+                display-workflow-run-url: true
+                # The time to wait (+unit) between two polls to get the URL of the workflow run
+                wait-for-completion: true
+                # Maximum amount of time (+unit) to wait to mark workflow as timed out
+                wait-for-completion-timeout: 1m
+                      
 
     deployment2:
         runs-on: ubuntu-24.04
@@ -118,7 +130,7 @@ jobs:
                 # The reference can be a branch, tag, or a commit SHA
                 ref: main
                 # Repo owner & name, slash separated, only set if invoking a workflow in a different repo
-                repo: Ronda-deploy
+                repo: ozennou/Ronda-deploy
           
 
 
