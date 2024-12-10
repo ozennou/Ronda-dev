@@ -28,27 +28,26 @@ jobs:
               run: |
                 docker compose up -d
                 docker ps
-            - name: Health check 
+            # Alternative health check approaches
+            - name: Health check
               run: |
+                # Try with verbose output to get more details
                 i=0
                 while [ $i -lt 10 ]; do
-                    # Try to curl the health endpoint. If successful, break the loop
-                    curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null && { echo "Health check successful!"; break; }
+                    # Verbose curl to diagnose
+                    curl -v http://localhost:8000/healthz || true
                     
-                    # If curl fails, output the status code for debugging
-                    echo "Health check failed with status $?"
+                    # Try different host
+                    curl -v http://0.0.0.0:8000/healthz || true
                     
-                    # Wait for 5 seconds before trying again
+                    # Check if port is open
+                    nc -z localhost 8000 || echo "Port 8000 not open"
+                    
+                    # Wait and increment
                     sleep 5
-                    
-                    # Increment the counter and print the counter value
                     ((i++))
                     echo "Attempt $i"
-            
                 done
-            
-                # Final curl command to ensure health status after the loop
-                curl --fail http://localhost:8000/healthz 1>&2 2>/dev/null || echo "Final health check failed."
             
               
     test:
