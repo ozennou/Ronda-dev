@@ -36,7 +36,7 @@ jobs:
                 max_attempts=10
                 attempt=0
                 while [ $attempt -lt $max_attempts ]; do
-                  (docker logs app 2>&1 | grep "0.0.0.0:8000") && { break; }
+                  (docker logs app 2>&1 | grep "0.0.0.0:8000") && { break; } || true
                   echo "Waiting for the app to be ready..."
                   sleep 5
                   ((attempt++))
