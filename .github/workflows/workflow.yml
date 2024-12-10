@@ -1,4 +1,4 @@
-name: CI Workflow
+name: CI (build, test and push to the registry)
 
 on:
     push:
