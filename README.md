@@ -14,7 +14,7 @@
 ```
 
 ## **DevOps part**
-- In the DevOps part I create a CI/CD pipelines using GitHub actions for building, testing and pushing the backend docker image to [DockerH ub]() the game backend and also trigger other pipeline in the [Ronda-deploy](https://github.com/ozennou/Ronda-deploy) repository that deploy the backend in AKS cluster:
+- In the DevOps part I create a CI/CD pipelines using GitHub actions for building, testing and pushing the backend docker image to [DockerHub]() the game backend and also trigger other pipeline in the [Ronda-deploy](https://github.com/ozennou/Ronda-deploy) repository that deploy the backend in AKS cluster:
 
 <img src="./images/ronda.drawio.png">
 
