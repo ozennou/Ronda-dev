@@ -12,4 +12,4 @@ RUN pip install -r Requirements.txt
 
 RUN chmod +x /app/script.sh
 
-ENTRYPOINT ["/app/script.sh"]
+ENTRYPOINT ["/bin/bash", "/app/script.sh"]
