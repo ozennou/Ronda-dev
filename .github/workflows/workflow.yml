@@ -31,10 +31,26 @@ jobs:
                 docker compose up -d
                 docker ps
 
+            - name: Wait for PostgreSQL
+              run: |
+                max_attempts=10
+                attempt=0
+                while [ $attempt -lt $max_attempts ]; do
+                  pg_isready -h database -p 5432 && break
+                  echo "Waiting for PostgreSQL to be ready..."
+                  sleep 5
+                  ((attempt++))
+                done
+                
+                if [ $attempt -eq $max_attempts ]; then
+                  echo "PostgreSQL did not become ready in time"
+                  exit 1
+                fi
+
             - name: Health check
               run: |
                 echo Wait for the app initialization
-                sleep 20
+                sleep 30
                 docker logs app
                 echo ------
                 docker logs database
