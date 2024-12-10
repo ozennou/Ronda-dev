@@ -20,7 +20,7 @@ jobs:
               run: |
                   cat << EOF > .env
                   POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-                  POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+                  POSTGRES_PASSWD=${{ secrets.POSTGRES_PASSWORD }}
                   REDIS_PASSWD=${{ secrets.REDIS_PASSWD }}
                   POSTGRES_HOST=${{ vars.POSTGRES_HOST }}
                   POSTGRES_DB=${{ vars.POSTGRES_DB }}
